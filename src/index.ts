@@ -2,26 +2,23 @@ import dotenv from "dotenv"
 import { Configuration, OpenAIApi } from "openai"
 import colors from "colors"
 import { checkInput, userQuestion } from "./user.js"
-import { botAnswer } from "./bot.js"
+import { ApiV1, botAnswer } from "./bot.js"
 import { startLoading, stopLoading } from "./loading.js"
+import { dirname, resolve } from "path"
+import { fileURLToPath } from "url"
 
 function init() {
-    dotenv.config()
-    const openai = new OpenAIApi(
-        new Configuration({
-            basePath: "https://api.chatanywhere.cn/v1",
-            apiKey: process.env.OPENAI_API_KEY,
-        })
-    )
+    dotenv.config({
+        path: resolve(dirname(fileURLToPath(import.meta.url)), "../.env")
+    })
 
-    return {
-        openai,
-    }
+    const api = new ApiV1()
 
+    return api
 }
 
 async function __main() {
-    const { openai } = init()
+    const api = init()
 
     while (true) {
         const question = userQuestion()
@@ -30,7 +27,7 @@ async function __main() {
 
         startLoading()
 
-        const { role, content } = await botAnswer(openai)
+        const { role, content } = await botAnswer(api)
 
         stopLoading()
 
