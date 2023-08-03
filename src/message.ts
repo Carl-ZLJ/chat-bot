@@ -10,6 +10,7 @@ export function addUserMessage(userInput: string) {
         role: "user",
         content: userInput,
     })
+    limitMessageLength()
 }
 
 export function addAssistantMessage(answer: string) {
@@ -17,4 +18,12 @@ export function addAssistantMessage(answer: string) {
         role: "assistant",
         content: answer,
     })
+    limitMessageLength()
+}
+
+// create a function to limit the length of message to five
+export function limitMessageLength() {
+    if (messages.length > 5) {
+        messages.shift()
+    }
 }
