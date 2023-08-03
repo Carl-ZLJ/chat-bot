@@ -1,32 +1,41 @@
-import { Configuration, OpenAIApi } from "openai"
 import dotenv from "dotenv"
-import readlineSync from "readline-sync"
+import { Configuration, OpenAIApi } from "openai"
+import colors from "colors"
+import { checkInput, userQuestion } from "./user.js"
+import { botAnswer } from "./bot.js"
+import { startLoading, stopLoading } from "./loading.js"
 
-dotenv.config()
+function init() {
+    dotenv.config()
+    const openai = new OpenAIApi(
+        new Configuration({
+            basePath: "https://api.chatanywhere.cn/v1",
+            apiKey: process.env.OPENAI_API_KEY,
+        })
+    )
 
-
-const openai = new OpenAIApi(
-    new Configuration({
-        basePath: "https://api.chatanywhere.cn/v1",
-        apiKey: process.env.OPENAI_API_KEY,
-    })
-)
-
-void (async () => {
-    while (true) {
-        const userInput = readlineSync.question("You: ")
-        const chat = await openai.createChatCompletion(
-            {
-                model: "gpt-3.5-turbo",
-                messages: [
-                    {
-                        "role": "user",
-                        "content": userInput,
-                    }
-                ]
-            },
-        )
-        const { content, role } = chat.data.choices[0].message!
-        console.log(`${role}: ${content}`)
+    return {
+        openai,
     }
-})()
+
+}
+
+async function __main() {
+    const { openai } = init()
+
+    while (true) {
+        const question = userQuestion()
+
+        checkInput(question)
+
+        startLoading()
+
+        const { role, content } = await botAnswer(openai)
+
+        stopLoading()
+
+        console.log(`\n${colors.bgBlue(colors.yellow(role))}: ${content}\n`)
+    }
+}
+
+__main()

@@ -1,21 +1,30 @@
 {
-  "name": "chat-bot",
+  "name": "cchat",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "bin": "./dist/bundle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c rollup.config.js",
+    "dev": "node dist/bundle.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.3.1",
     "openai": "^3.3.0",
-    "readline-sync": "^1.4.10"
+    "ora": "^7.0.1",
+    "readline-sync": "^1.4.10",
+    "rollup-plugin-add-shebang": "^0.3.1"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.2",
     "@types/node": "^20.4.5",
-    "@types/readline-sync": "^1.4.4"
+    "@types/readline-sync": "^1.4.4",
+    "rollup": "^3.27.1",
+    "tslib": "^2.6.1"
   }
 }
