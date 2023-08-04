@@ -1,6 +1,6 @@
 # chat bot
 
-a chat bot in terminal
+a cli chat bot
 
 ## features
 - context support
