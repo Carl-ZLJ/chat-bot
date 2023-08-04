@@ -1,15 +1,11 @@
 import { Configuration, OpenAIApi } from "openai"
 import { Message, addAssistantMessage, messages } from "./message.js"
+import { SmartAPI } from "./SmartAPI.js"
 
 type Api =
     | OpenAIApi
 
-abstract class SmartApi {
-    abstract createChat(): void
-    abstract chatResponse(): Message
-}
-
-export class ApiV1 extends SmartApi {
+export class ApiV1 extends SmartAPI {
     api: Api
     chat: any
     constructor() {
@@ -41,7 +37,7 @@ export class ApiV1 extends SmartApi {
     }
 
 }
-export async function botAnswer(api: SmartApi) {
+export async function botAnswer(api: SmartAPI) {
     await api.createChat()
     const { content, role } = api.chatResponse()
 

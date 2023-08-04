@@ -1,5 +1,4 @@
 import dotenv from "dotenv"
-import { Configuration, OpenAIApi } from "openai"
 import colors from "colors"
 import { checkInput, userQuestion } from "./user.js"
 import { ApiV1, botAnswer } from "./bot.js"
